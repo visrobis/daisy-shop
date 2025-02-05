@@ -14,9 +14,9 @@ const ProductsPage = () => {
   if (!productContext)
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <h6 className="text-lg font-semibold text-gray-600">
+        <p className="text-lg font-semibold text-gray-600">
           Loading products...
-        </h6>
+        </p>
       </div>
     );
 
