@@ -6,6 +6,11 @@ import React, { useContext, useState } from "react";
 const ProductsPage = () => {
   const productContext = useContext(ProductContext);
 
+  // Define states BEFORE any conditional return
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const productsPerPage = 10;
+
   if (!productContext)
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -16,13 +21,6 @@ const ProductsPage = () => {
     );
 
   const { products } = productContext;
-
-  // Pagination states
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 10;
-
-  // Search state
-  const [searchQuery, setSearchQuery] = useState("");
 
   // Filtered products based on search query
   const filteredProducts = products.filter(
