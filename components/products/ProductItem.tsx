@@ -35,15 +35,17 @@ export const ProductItem: React.FC<Props> = ({ products }) => {
             height={270}
             alt={product.name}
           />
-          <div className="absolute bottom-0 left-0 w-full bg-white bg-opacity-80 p-3 backdrop-blur-sm">
+          <div className="absolute bottom-0 left-0 w-full bg-white bg-opacity-[1px] p-3 backdrop-blur-sm">
             <div className="flex justify-between items-center">
               <div className="text-gray-700">
-                <strong className="font-semibold">{product.name}</strong>
+                <strong className="font-semibold truncate whitespace-nowrap overflow-hidden max-w-[200px]">
+                  {product.name}
+                </strong>
                 <p className="text-sm text-gray-600">₱{product.price}</p>
               </div>
               <div className="border-l-2 border-gray-300 pl-3">
                 <Link
-                  href={`/product/${product.id}`}
+                  href={`/pages/product-details/${product.id}`}
                   className="text-blue-500 hover:underline text-sm"
                 >
                   Details

@@ -1,7 +1,7 @@
 "use client";
 import { ProductItem } from "@/components/products/ProductItem";
 import { ProductContext } from "@/context/Context";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 
 const ProductsPage = () => {
   const productContext = useContext(ProductContext);
@@ -29,13 +29,29 @@ const ProductsPage = () => {
       product.type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Shuffle function using Fisher-Yates algorithm
+  const shuffleArray = (array: typeof products) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Use useMemo to shuffle products when `filteredProducts` changes
+  const shuffledProducts = useMemo(
+    () => shuffleArray(filteredProducts),
+    [filteredProducts]
+  );
+
   // Calculate total pages
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const totalPages = Math.ceil(shuffledProducts.length / productsPerPage);
 
   // Get current products for the page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
+  const currentProducts = shuffledProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -55,22 +71,10 @@ const ProductsPage = () => {
       <input
         type="text"
         placeholder="Search by name or type..."
-        className="w-full p-3 mb-4 border-2 rounded-md text-sizeParagraphSm md:text-sizeParagraphBase"
+        className="w-full p-3 mb-4 border-2 rounded-md text-sizeParagraphSm md:text-sizeParagraphBase outline-none"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-
-      {/* Category Dropdown */}
-      <select
-        className="p-3 border-2 rounded-md text-sizeParagraphSm md:text-sizeParagraphBase"
-        defaultValue=""
-      >
-        <option value="" disabled>
-          Category
-        </option>
-        <option value="printings">Printings</option>
-        <option value="cooking">Cooking</option>
-      </select>
 
       {/* Products Section */}
       <article className="flex justify-center items-center my-10">
